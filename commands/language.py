@@ -1,10 +1,25 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
+import nltk
+from nltk.corpus import state_union
+from nltk.tokenize import PunktSentenceTokenizer
 
-simple_text = "Hello Mr. Henrique, how are you doing today? The weather is great and Python is awesome."
 
-''' print(sent_tokenize(simple_text))
+train_text = state_union.raw("2005-GWBush.txt")
+sample_text = state_union.raw("2006-GWBush.txt")
 
-print(word_tokenize(simple_text)) '''
+custom_sent_tokenizer = PunktSentenceTokenizer(train_text)
 
-for i in word_tokenize(simple_text):
-    print(i)
+tokenized = custom_sent_tokenizer.tokenize(sample_text)
+
+def process_content():
+    try:
+        for i in tokenized:
+            words = nltk.word_tokenize(i)
+            tagged = nltk.pos_tag(words)
+
+            print(tagged)
+
+    except Exception as e:
+        print(str(e))
+
+
+process_content()

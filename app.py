@@ -1,3 +1,4 @@
+from filecmp import cmp
 import speech_recognition as sr
 from playsound import playsound
 from gtts import gTTS
@@ -22,10 +23,13 @@ def command():
 
         frase = microfone.recognize_google(audio, language='pt-BR')
 
-        #print("Voce disse: " + frase)
+        # print("Voce disse: " + frase)
 
         if frase == "Olá Natasha":
             playsound("ouvindo.mp3")
+
+        if frase == "Como você se chama":
+            playsound("natasha.mp3")
 
         if frase == "Natasha conte-me uma piada":
             piada = jokes.get_joke(language='en')
@@ -36,9 +40,9 @@ def command():
             tts.save("piada.mp3")
             playsound("piada.mp3")
 
-        if frase == "Natasha cotação do dólar para real":
-            ret_cotacao = cotacao()
-            print(ret_cotacao)
+
+        if frase == "Natasha cotação do dólar":
+            ret_cotacao = cotacao("USD-BRL")
             cria_audio(ret_cotacao, "cotacao")
 
         if frase == "Natasha encerrar":
@@ -66,4 +70,29 @@ def execute():
 
         print(p)
 
+
+def teste(texto):
+
+    texto = texto
+    moedas = {"dólar": "USDBRL", "real": "BRLUSD"}
+
+    texto = texto.split(" ")
+
+    b = dict((k,2) for k in texto)
+
+    # print(b)
+
+    shared = set(moedas.keys()) & set(b.keys())
+    shared = str(shared)
+    shared = shared.strip("{''}")
+    # ke = moedas.get(shared)
+
+    l = ["dólar", "real"]
+    i = l.index(shared)
+    frase = "Natasha cotação do {}".format(l[i])
+
+    print(frase)
+
 execute()
+# cria_audio("Meu nome é Natasha, sou sua assistente virtual.", "natasha")
+# teste("Natasha cotação do dólar")
