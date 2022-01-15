@@ -24,10 +24,10 @@ def command():
 
         #print("Voce disse: " + frase)
 
-        if frase == "Olá assistente":
+        if frase == "Olá Natasha":
             playsound("ouvindo.mp3")
 
-        if frase == "assistente conte-me uma piada":
+        if frase == "Natasha conte-me uma piada":
             piada = jokes.get_joke(language='en')
             result = translator.translate(piada, src="en", dest="pt")
 
@@ -36,12 +36,12 @@ def command():
             tts.save("piada.mp3")
             playsound("piada.mp3")
 
-        if frase == "cotação do dólar para real":
+        if frase == "Natasha cotação do dólar para real":
             ret_cotacao = cotacao()
             print(ret_cotacao)
             cria_audio(ret_cotacao, "cotacao")
 
-        if frase == "encerrar":
+        if frase == "Natasha encerrar":
             print("encerrando...")
             tchau()
             exit()
