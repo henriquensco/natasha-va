@@ -4,9 +4,7 @@ import json
 
 def cotacao(moeda):
     url = "https://economia.awesomeapi.com.br/json/last/{}".format(moeda)
-
-    #req = request.Request(url, method='GET')
-
+    
     with request.urlopen(url) as f:
         data = f.read().decode('utf-8')
         data = json.loads(data)
@@ -28,5 +26,3 @@ def conversao_medidas(valor):
         valor_falado = soup.select(".destacado")[2].decode_contents()
 
         return valor_falado
-
-cotacao("USD-BRL")
