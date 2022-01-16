@@ -7,6 +7,7 @@ import pyjokes as jokes
 from googletrans import Translator
 
 from commands.cotacao import cotacao
+from commands.playMusic import youtube_search
 
 
 def command():
@@ -25,11 +26,17 @@ def command():
 
         # print("Voce disse: " + frase)
 
+
         if frase == "Olá Natasha":
             playsound("ouvindo.mp3")
 
         if frase == "Como você se chama":
             playsound("natasha.mp3")
+
+        if youtube_search(frase):
+            fr = youtube_search(frase)
+            fr = str(fr)
+            cria_audio(fr, "youtube")
 
         if frase == "Natasha conte-me uma piada":
             piada = jokes.get_joke(language='en')
