@@ -29,7 +29,7 @@ def youtube_search(frase):
     search_response = youtube.search().list(
         q=frase,
         part="id,snippet",
-        maxResults=25
+        maxResults=5
     ).execute()
 
     videos = []
@@ -39,8 +39,8 @@ def youtube_search(frase):
           videos.append("%s (%s)" % (search_result["snippet"]["title"],
                                  "https://youtube.com/watch?v={}".format(search_result["id"]["videoId"])))
 
-    print("Videos:\n", "\n".join(videos), "\n")
+    #print("Videos:\n", "\n".join(videos), "\n")
 
     return videos
 
-youtube_search("save me")
+#youtube_search("save me")

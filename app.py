@@ -1,4 +1,5 @@
 from filecmp import cmp
+from logging import exception
 import speech_recognition as sr
 from playsound import playsound
 from gtts import gTTS
@@ -7,7 +8,8 @@ import pyjokes as jokes
 from googletrans import Translator
 
 from commands.cotacao import cotacao
-from commands.playMusic import youtube_search
+from commands.youtubeSearch import youtube_search
+from commands.weather import previsaoDoTempo
 
 
 def command():
@@ -22,41 +24,47 @@ def command():
 
         audio = microfone.listen(source)
 
-        frase = microfone.recognize_google(audio, language='pt-BR')
-
         # print("Voce disse: " + frase)
 
+        try:
+            frase = microfone.recognize_google(audio, language='pt-BR')
+            
+            if frase == "Olá Natasha":
+                playsound("ouvindo.mp3")
 
-        if frase == "Olá Natasha":
-            playsound("ouvindo.mp3")
+            if frase == "Como você se chama":
+                playsound("natasha.mp3")
 
-        if frase == "Como você se chama":
-            playsound("natasha.mp3")
+            ''' if frase == youtube_search(frase):
+                fr = youtube_search(frase)
+                fr = str(fr)
+                cria_audio(fr, "youtube") '''
+            
+            if frase == "Natasha previsão do tempo":
+                previsao = previsaoDoTempo()
+                cria_audio(previsao, "weather")
+                
 
-        if youtube_search(frase):
-            fr = youtube_search(frase)
-            fr = str(fr)
-            cria_audio(fr, "youtube")
+            if frase == "Natasha conte-me uma piada":
+                piada = jokes.get_joke(language='en')
+                result = translator.translate(piada, src="en", dest="pt")
 
-        if frase == "Natasha conte-me uma piada":
-            piada = jokes.get_joke(language='en')
-            result = translator.translate(piada, src="en", dest="pt")
+                print(result.text)
+                tts = gTTS(result.text, lang='pt-BR')
+                tts.save("piada.mp3")
+                playsound("piada.mp3")
 
-            print(result.text)
-            tts = gTTS(result.text, lang='pt-BR')
-            tts.save("piada.mp3")
-            playsound("piada.mp3")
+            if frase == "Natasha cotação do dólar":
+                ret_cotacao = cotacao("USD-BRL")
+                cria_audio(ret_cotacao, "cotacao")
 
-
-        if frase == "Natasha cotação do dólar":
-            ret_cotacao = cotacao("USD-BRL")
-            cria_audio(ret_cotacao, "cotacao")
-
-        if frase == "Natasha encerrar":
-            print("encerrando...")
-            tchau()
-            exit()
-
+            if frase == "Natasha encerrar":
+                print("encerrando...")
+                tchau()
+                exit()
+        except: 
+            print("erro")
+            
         return frase
 
 
@@ -73,9 +81,7 @@ def cria_audio(texto, nome):
 
 def execute():
     while True:
-        p = command()
-
-        print(p)
+        command()
 
 
 def teste(texto):
@@ -85,7 +91,7 @@ def teste(texto):
 
     texto = texto.split(" ")
 
-    b = dict((k,2) for k in texto)
+    b = dict((k, 2) for k in texto)
 
     # print(b)
 
@@ -99,6 +105,7 @@ def teste(texto):
     frase = "Natasha cotação do {}".format(l[i])
 
     print(frase)
+
 
 execute()
 # cria_audio("Meu nome é Natasha, sou sua assistente virtual.", "natasha")
