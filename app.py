@@ -44,6 +44,11 @@ def command():
                 previsao = previsaoDoTempo()
                 cria_audio(previsao, "weather")
                 
+            if frase == "previsão":
+                print("Qual cidade?")
+                if frase == "São Paulo":
+                    print(frase)
+                
 
             if frase == "Natasha conte-me uma piada":
                 piada = jokes.get_joke(language='en')
